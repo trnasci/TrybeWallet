@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import SUBMIT_USER_PROFILE from '../redux/actions';
+import { SUBMIT_USER_PROFILE } from '../redux/actions';
 
 class Login extends Component {
   state = {
@@ -18,7 +18,8 @@ class Login extends Component {
 
   handleSubmit = () => {
     const { history, dispatch } = this.props;
-    const action = { type: SUBMIT_USER_PROFILE, payload: { ...this.state } };
+    const { email } = this.state;
+    const action = { type: SUBMIT_USER_PROFILE, payload: email };
     dispatch(action);
     history.push('/carteira');
   };

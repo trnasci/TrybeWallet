@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 class Header extends Component {
   render() {
     const { email } = this.props;
+    console.log(this.props);
     return (
       <header>
         <div data-testid="email-field">{ email }</div>
@@ -20,7 +21,7 @@ Header.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { ...state.userReducer.user };
+  return { ...state.user };
 }
 
 export default connect(mapStateToProps)(Header);
