@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { requestAPI } from '../redux/actions';
+import { requestAPI, saveExpenses } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
     id: 0,
     value: '',
     description: '',
-    currency: 'BRL',
+    currency: 'USD',
     method: 'Dinheiro',
     tag: 'Alimentação',
     exchangeRates: [],
@@ -25,11 +25,40 @@ class WalletForm extends Component {
     this.setState({ [name]: value });
   };
 
+  handleSubmit = async () => {
+    const { dispatch } = this.props;
+    const endpoint = 'https://economia.awesomeapi.com.br/json/all';
+    const data = await fetch(endpoint);
+    const currencies = await data.json();
+    delete currencies.USDT;
+    console.log(currencies);
+    this.setState({ exchangeRates: currencies });
+    const { id, value, description, currency, method, tag } = this.state;
+    const expense = {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: currencies,
+    };
+    dispatch(saveExpenses(expense));
+    this.setState({
+      id: id + 1,
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      exchangeRates: {},
+    });
+  };
+
   render() {
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const { currencies } = this.props;
     console.log(id, exchangeRates);
-    console.log(this.props);
     return (
       <form>
         <label htmlFor="value">
@@ -104,6 +133,13 @@ class WalletForm extends Component {
               <option value="Saúde">Saúde</option>
             </select>
           </div>
+          <button
+            type="button"
+            data-testid="btn-submit-expenses"
+            onClick={ this.handleSubmit }
+          >
+            Adicionar despesa
+          </button>
         </label>
       </form>
     );
