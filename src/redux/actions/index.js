@@ -10,9 +10,11 @@ const getCurrencies = (payload) => ({
 const requestAPI = () => async (dispatch) => {
   const endpoint = 'https://economia.awesomeapi.com.br/json/all';
   const data = await fetch(endpoint);
+  delete data.USDT;
   const currencies = await data.json();
+  delete currencies.USDT;
 
-  dispatch(getCurrencies(currencies));
+  dispatch(getCurrencies(Object.keys(currencies)));
 };
 
 export {

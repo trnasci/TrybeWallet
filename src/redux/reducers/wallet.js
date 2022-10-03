@@ -11,7 +11,7 @@ const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case GET_CURRENCIES:
     return {
-      currencies: [{ ...action.payload }],
+      currencies: [...action.payload],
       expenses: [],
       editor: false,
       idToEdit: 0,

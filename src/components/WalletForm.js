@@ -27,6 +27,7 @@ class WalletForm extends Component {
 
   render() {
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const { currencies } = this.props;
     console.log(id, exchangeRates);
     console.log(this.props);
     return (
@@ -65,8 +66,8 @@ class WalletForm extends Component {
               onChange={ this.handleChange }
             >
               {
-                exchangeRates.map((element, index) => (
-                  <option key={ index }>{ element.code }</option>
+                currencies.map((element, index) => (
+                  <option key={ index }>{ element}</option>
                 ))
               }
             </select>
@@ -111,6 +112,7 @@ class WalletForm extends Component {
 
 WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 function mapStateToProps(state) {
