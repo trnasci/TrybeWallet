@@ -31,7 +31,7 @@ class Table extends Component {
         </thead>
         <tbody>
           {
-            expenses.map((element, index) => (
+            expenses.map((element) => (
               <tr key={ element.id }>
                 <td>{ element.description }</td>
                 <td>{ element.tag }</td>
