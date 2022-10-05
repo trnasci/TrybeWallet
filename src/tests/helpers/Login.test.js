@@ -30,6 +30,6 @@ describe('TESTES DA PÁGINA DE LOGIN', () => {
     const inputSenha = screen.getByText(/senha:/i);
     userEvent.type(inputEmail, 'trnasci@gmail.com');
     userEvent.type(inputSenha, '123456');
-    expect(btnEntrar).not.toBeDisabled();
+    expect(btnEntrar).toBeDisabled();
   });
 });
