@@ -56,9 +56,9 @@ class WalletForm extends Component {
   };
 
   render() {
-    const { id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const { value, description, currency, method, tag, exchangeRates } = this.state;
     const { currencies } = this.props;
-    console.log(id, exchangeRates);
+    console.log(exchangeRates);
     return (
       <form>
         <label htmlFor="value">
