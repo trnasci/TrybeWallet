@@ -4,6 +4,8 @@ const GET_CURRENCIES = 'GET_CURRENCIES';
 
 const SAVE_EXPENSES = 'SAVE_EXPENSES';
 
+const DEL_EXPENSES = 'DEL_EXPENSES';
+
 const getCurrencies = (payload) => ({
   type: GET_CURRENCIES,
   payload,
@@ -11,6 +13,11 @@ const getCurrencies = (payload) => ({
 
 const saveExpenses = (payload) => ({
   type: SAVE_EXPENSES,
+  payload,
+});
+
+const delExpenses = (payload) => ({
+  type: DEL_EXPENSES,
   payload,
 });
 
@@ -37,8 +44,10 @@ export {
   SUBMIT_USER_PROFILE,
   GET_CURRENCIES,
   SAVE_EXPENSES,
+  DEL_EXPENSES,
   requestAPI,
   getCurrencies,
   requestAPIAndSaveExpense,
   saveExpenses,
+  delExpenses,
 };

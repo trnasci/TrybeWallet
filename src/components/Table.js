@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { delExpenses } from '../redux/actions';
 
 class Table extends Component {
+  handleBtnDel = (event) => {
+    const { dispatch } = this.props;
+    const { target } = event;
+    const { id } = target;
+    dispatch(delExpenses(id));
+  };
+
   render() {
     const { expenses } = this.props;
     console.log(expenses);
@@ -24,7 +32,7 @@ class Table extends Component {
         <tbody>
           {
             expenses.map((element, index) => (
-              <tr key={ index }>
+              <tr key={ element.id }>
                 <td>{ element.description }</td>
                 <td>{ element.tag }</td>
                 <td>{ element.method }</td>
@@ -40,10 +48,21 @@ class Table extends Component {
                 </td>
                 <td>Real</td>
                 <td>
-                  <button id={ element.id } type="button">Editar</button>
-                </td>
-                <td>
-                  <button id={ element.id } type="button">Excluir</button>
+                  <button
+                    id={ element.id }
+                    type="button"
+                    data-testid="edit-btn"
+                  >
+                    Editar despesa
+                  </button>
+                  <button
+                    id={ element.id }
+                    data-testid="delete-btn"
+                    type="button"
+                    onClick={ this.handleBtnDel }
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
             ))
@@ -56,6 +75,7 @@ class Table extends Component {
 
 Table.propTypes = {
   expenses: PropTypes.arrayOf(Object).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
