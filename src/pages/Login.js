@@ -7,13 +7,14 @@ class Login extends Component {
   state = {
     email: '',
     password: '',
+    disabled: true,
 
   };
 
   handleChange = (event) => {
     const { target } = event;
     const { name, value } = target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => this.validationButton());
   };
 
   handleSubmit = () => {
@@ -24,10 +25,21 @@ class Login extends Component {
     history.push('/carteira');
   };
 
-  render() {
+  validationButton = () => {
     const { email, password } = this.state;
-    const REGEX_EMAIL = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    const minPasswordLength = 6;
+    const regexp = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const minLength = 6;
+    const validEmail = email.match(regexp);
+    const validPassword = password.length >= minLength;
+    if (validEmail && validPassword) {
+      this.setState({ disabled: false });
+    } else {
+      this.setState({ disabled: true });
+    }
+  };
+
+  render() {
+    const { email, password, disabled } = this.state;
     return (
       <div>
         <label htmlFor="email">
@@ -58,7 +70,7 @@ class Login extends Component {
           type="submit"
           data-testid="btn-submit"
           onClick={ this.handleSubmit }
-          disabled={ !REGEX_EMAIL.test(email) || password.length < minPasswordLength }
+          disabled={ disabled }
         >
           Entrar
         </button>
