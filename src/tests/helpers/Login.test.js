@@ -1,35 +1,51 @@
-import { screen } from '@testing-library/react';
+import React from 'react';
 import userEvent from '@testing-library/user-event';
-import App from '../../App';
+import { screen } from '@testing-library/react';
 import { renderWithRouterAndRedux } from './renderWith';
+import App from '../../App';
 
-describe('TESTES DA PÁGINA DE LOGIN', () => {
-  it('1- Testa se Login tem a rota "/".', () => {
+describe('Teste da  página de login', () => {
+  test('1- A rota deve ser "/"', () => {
     const { history } = renderWithRouterAndRedux(<App />);
     expect(history.location.pathname).toBe('/');
   });
-  it('2- Testa se existe o input de e-mail ', () => {
+  test('2- Existe o input Email', () => {
     renderWithRouterAndRedux(<App />);
-    const inputEmail = screen.getByText(/email:/i);
-    expect(inputEmail).toBeInTheDocument();
+    const emailInput = screen.getByText(/email:/i);
+    expect(emailInput).toBeInTheDocument();
   });
-  it('3- Testa se existe o input de senha ', () => {
+  test('3- Existe o input de senha', () => {
     renderWithRouterAndRedux(<App />);
-    const inputSenha = screen.getByText(/senha:/i);
-    expect(inputSenha).toBeInTheDocument();
+    const emailInput = screen.getByTestId(/email-input/i);
+    const senhaInput = screen.getByTestId(/password-input/i);
+    expect(emailInput).toBeInTheDocument();
+    expect(senhaInput).toBeInTheDocument();
   });
-  it('4- Testa se existe o botão de login ', () => {
+  test('4 - Verifica se existe o botão desabilitado', () => {
     renderWithRouterAndRedux(<App />);
     const btnEntrar = screen.getByRole('button', { name: /entrar/i });
     expect(btnEntrar).toBeInTheDocument();
+    expect(btnEntrar).toBeDisabled();
   });
-  it('5- Testa validação do botão submit ', () => {
+  test('5- Verifica validação do botão', () => {
     renderWithRouterAndRedux(<App />);
     const btnEntrar = screen.getByRole('button', { name: /entrar/i });
-    const inputEmail = screen.getByText(/email:/i);
-    const inputSenha = screen.getByText(/senha:/i);
-    userEvent.type(inputEmail, 'trnasci@gmail.com');
-    userEvent.type(inputSenha, '123456');
+
+    const inputEmail = screen.getByTestId(/email-input/i);
+    userEvent.type(inputEmail, 'thiagogmail.com');
+
     expect(btnEntrar).toBeDisabled();
+  });
+  test('6- Verifica se o email é salvo no estado central', () => {
+    const { store } = renderWithRouterAndRedux(<App />);
+    const inputEmail = screen.getByTestId(/email-input/i);
+    const inputPassword = screen.getByTestId(/password-input/i);
+    const btnEntrar = screen.getByRole('button', { name: /entrar/i });
+
+    userEvent.type(inputEmail, 'trnasci@gmail.com');
+    userEvent.type(inputPassword, '123456');
+    userEvent.click(btnEntrar);
+
+    expect(store.getState().user.email).toBe('trnasci@gmail.com');
   });
 });
